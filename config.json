@@ -1,0 +1,21 @@
+{
+  "jira": {
+    "user": "name.lastname",
+    "email": "name.lastname@adroll.com",
+    "token": "YOUR_JIRA_TOCKEN"
+  },
+  "time_tracker": {
+    "user": "name.lastname",
+    "password": "password",
+    "project": "AdRoll - AdRoll",
+    "focal_point": "Robbie Holmes",
+    "assignment": "Software Development"
+  },
+  "working_days": [
+    "mon", "tue", "wed", "thu", "fri"
+  ],
+  "hours_per_day": 8,
+  "tasks_append": {
+    "fri": "- Sprint Planning"
+  }
+}
