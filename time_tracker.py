@@ -1,9 +1,7 @@
-import sys
 import re
 import requests
 from typing import List
 from datetime import date, datetime, timedelta
-from itertools import chain
 
 
 ENDPOINT_LOGIN = 'default.aspx'
@@ -33,6 +31,7 @@ BUTTON_ACCEPT = 'Accept'
 
 DATE_FORMAT = '%d/%m/%Y'
 
+
 class TimeTrackerException(Exception):
     pass
 
@@ -41,7 +40,7 @@ class TimeTrackerEntry:
     def __init__(self, date_str: str, hours: str, project: str, assignment: str, description: str, *args):
         try:
             self.date = datetime.strptime(date_str, DATE_FORMAT).date()
-        except:
+        except Exception:
             self.date = None
         self.hours = float(hours)
         self.project = project
@@ -49,7 +48,10 @@ class TimeTrackerEntry:
         self.description = description
 
     def __repr__(self):
-        return f'TimeTrackerEntry(hours={self.hours}, date={self.date}, project={self.project}, assignment={self.assignment})'
+        return (
+            'TimeTrackerEntry'
+            f'(hours={self.hours}, date={self.date}, project={self.project}, assignment={self.assignment})'
+        )
 
 
 class TimeTracker:
@@ -148,7 +150,7 @@ class TimeTracker:
 
     def list_entries(
         self,
-        start_date: date = date.today() - timedelta(days=date.today().day),
+        start_date: date = date.today() - timedelta(days = date.today().day),
         end_date: date = date.today()
     ) -> List[TimeTrackerEntry]:
         """Fetches all the submitted hours between the given dates.
@@ -195,7 +197,8 @@ class TimeTracker:
 
         # We need to pass a user agent capable of loading web fragments.
         headers = {
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3891.0 Safari/537.36 Edg/78.0.266.0'
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) '
+                          'Chrome/78.0.3891.0 Safari/537.36 Edg/78.0.266.0'
         }
 
         response = getattr(self._session, method)(
