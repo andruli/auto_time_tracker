@@ -23,14 +23,25 @@ class Jira:
     def search_tickets(self) -> List[JiraTicket]:
         # Queries are written in jira query language
         # https://www.atlassian.com/blog/jira-software/jql-the-most-flexible-way-to-search-jira-14
+        # In this particular query we search for
+        # ```
+        # tickets assigned to myself that are not epics and:
+        # - are in a sprint and actively being worked on OR
+        # - were marked as completed within the last 24 hours
+        # ```
         response = self._call(
             'search', {
                 'jql': f"""
                     assignee={self.user} AND
                     issuetype != Epic AND
-                    resolution = Unresolved AND
-                    status != Open AND
-                    Sprint != EMPTY
+                    (
+                        (
+                            resolution = Unresolved AND
+                            status != Open AND
+                            Sprint != EMPTY
+                        ) OR
+                        resolved >= -1d
+                    )
                 """
             }
         ).json()
