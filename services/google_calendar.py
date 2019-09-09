@@ -13,21 +13,30 @@ from google.auth.transport.requests import Request
 
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
-TOKEN_FILE = path.join(path.dirname(__file__), '.gcaltoken.pickle')
+TOKEN_FILE = path.join(path.dirname(__file__), '../secrets/.gcaltoken.pickle')
 
-STATUS_CONFIRMED = 'confirmed'
+STATUS_ACCEPTED = 'accepted'
+STATUS_DECLINED = 'declined'
+STATUS_TENTATIVE = 'tentative'
+STATUS_NEEDS_ACTION = 'needsAction'
 
 
 class CalendarEvent:
     def __init__(self, raw_event: dict):
         self.id: str = raw_event['id']
-        self.status: str = raw_event['status']
         self.link: str = raw_event.get('htmlLink')
         self.summary: str = raw_event.get('summary')
         self.description: str = raw_event.get('description')
         self.start_date: datetime = datetime.fromisoformat(raw_event['start']['dateTime'])
         self.end_date: datetime = datetime.fromisoformat(raw_event['end']['dateTime'])
+        self.status: str = (
+            next((a for a in raw_event.get('attendees', []) if a.get('self')), {})
+        ).get('responseStatus') or STATUS_ACCEPTED
         self._raw_event = raw_event
+
+    @property
+    def accepted(self):
+        return self.status == STATUS_ACCEPTED
 
     @property
     def duration(self) -> timedelta:

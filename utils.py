@@ -3,6 +3,7 @@ from os import path
 
 __config = None
 
+
 def get_config():
     if __config:
         return __config

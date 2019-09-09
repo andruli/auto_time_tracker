@@ -1,5 +1,5 @@
 __pycache__
 config.json
-google_credentials.json
+config.base.json
 auto_time_tracker.log
-.gcaltoken.pickle
+secrets/
