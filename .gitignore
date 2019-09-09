@@ -1,2 +1,5 @@
 __pycache__
 config.json
+google_credentials.json
+auto_time_tracker.log
+.gcaltoken.pickle
