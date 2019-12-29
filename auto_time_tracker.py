@@ -5,6 +5,7 @@ from os import path
 from datetime import date
 
 from utils import get_config
+from notifier import notify, NotificationKind
 
 from services.time_tracker import TimeTracker
 from services.google_calendar import Calendar
@@ -101,4 +102,9 @@ def submit_time_tracker_entry():
 
 
 if __name__ == '__main__':
-    submit_time_tracker_entry()
+    try:
+        submit_time_tracker_entry()
+        notify('TimeTracker entry saved.')
+    except Exception as e:
+        notify(str(e), kind=NotificationKind.ERROR)
+        raise

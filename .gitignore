@@ -3,3 +3,6 @@ config.json
 config.base.json
 auto_time_tracker.log
 secrets/
+virtualenv/
+.vscode/
+.DS_Store
